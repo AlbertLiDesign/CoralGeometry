@@ -9,14 +9,14 @@ namespace CoralGeometry
     {
         public static PlanktonMesh ExplicitMethod(PlanktonMesh pmesh, double lambda, int iterations, bool keepBoundary = true)
         {
-            var laplace = new Vector3D[pmesh.Vertices.Count];
+            var laplace = new Vector[pmesh.Vertices.Count];
             var ew = LaplaceOperator.CotLaplaceEdgeWeight(pmesh);
 
             for (int iter = 0; iter < iterations; iter++)
             {
                 for (int i = 0; i < pmesh.Vertices.Count; i++)
                 {
-                    laplace[i] = Vector3D.Origin;
+                    laplace[i] = Vector.Origin(3);
                     if (!(keepBoundary && pmesh.Vertices.IsBoundary(i)))
                     {
                         double w = 0;
@@ -69,7 +69,7 @@ namespace CoralGeometry
                 var vweight = 0.5 / DifferentialGeometry.MixedVoronoiArea(pmesh, v);
                 var hs = pmesh.Vertices.GetHalfedges(v);
                 var ww = 0.0;
-                Vector3D b = pmesh.Vertices[v].ToVector3D() / vweight;
+                Vector b = pmesh.Vertices[v].ToVector3D() / vweight;
                 for (int j = 0; j < hs.Length; j++)
                 {
                     var vv = pmesh.Halfedges.EndVertex(hs[j]);

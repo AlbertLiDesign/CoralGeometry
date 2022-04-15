@@ -12,7 +12,7 @@ namespace CoralGeometry
         /// <param name="b">Second vertex.</param>
         /// <param name="c">Third vertex.</param>
         /// <returns>Return the normal of a mesh face.</returns>
-        public static Vector3D FaceNormal(Vector3D a, Vector3D b, Vector3D c)
+        public static Vector FaceNormal(Vector a, Vector b, Vector c)
         {
             return (b - a).CrossProduct(c - a); 
         }
@@ -22,14 +22,14 @@ namespace CoralGeometry
         /// </summary>
         /// <param name="pmesh"> Input a plankton mesh.</param>
         /// <returns> Return the normal of each vertex.</returns>
-        public static Vector3D[] VertexNormals(PlanktonMesh pmesh)
+        public static Vector[] VertexNormals(PlanktonMesh pmesh)
         {
-            var normals = new Vector3D[pmesh.Vertices.Count];
+            var normals = new Vector[pmesh.Vertices.Count];
             Parallel.For(0, pmesh.Vertices.Count, V =>
             {
                 // get normals
-                Vector3D Vertex = pmesh.Vertices[V].ToVector3D();
-                Vector3D Norm = new Vector3D();
+                Vector Vertex = pmesh.Vertices[V].ToVector3D();
+                Vector Norm = new Vector();
 
                 // get all outgoing halfedges
                 int[] OutEdges = pmesh.Vertices.GetHalfedges(V);
@@ -38,7 +38,7 @@ namespace CoralGeometry
                 // get vanlance
                 int Valence = pmesh.Vertices.GetValence(V);
 
-                Vector3D[] OutVectors = new Vector3D[Neighbours.Length];
+                Vector[] OutVectors = new Vector[Neighbours.Length];
 
                 for (int j = 0; j < Valence; j++)
                 {
@@ -67,7 +67,7 @@ namespace CoralGeometry
             double area = 0.0f;
             var hfs = pmesh.Vertices.GetHalfedges(v);
             int h0, h1, h2;
-            Vector3D p, q, r, pq, qr, pr;
+            Vector p, q, r, pq, qr, pr;
             double dotp, dotq, dotr, triArea;
             double cotq, cotr;
             for (int i = 0; i < hfs.Length; i++)
@@ -96,7 +96,7 @@ namespace CoralGeometry
 
                 // dot products for each corner (of its two emanating edge vectors)
                 dotp = pq*pr;
-                dotq = qr.Reverse() * pq;
+                dotq = -qr * pq;
                 dotr = qr*pr;
 
                 // angle at p is obtuse
@@ -133,7 +133,7 @@ namespace CoralGeometry
         /// <param name="b">Second vertex.</param>
         /// <param name="c">Third vertex.</param>
         /// <returns></returns>
-        public static double TriangularArea(Vector3D a, Vector3D b, Vector3D c)
+        public static double TriangularArea(Vector a, Vector b, Vector c)
         {
             return (b - a).CrossProduct(c - a).Length / 2.0f;
         }
@@ -144,7 +144,7 @@ namespace CoralGeometry
         /// <param name="b">The second vertex on the mesh face.</param>
         /// <param name="c">The third vertex on the mesh face.</param>
         /// <returns> Return the circumcenter of the face. </returns>
-        public static Vector3D GetCircumcenter(Vector3D a, Vector3D b, Vector3D c)
+        public static Vector GetCircumcenter(Vector a, Vector b, Vector c)
         {
             var ac = c - a;
             var ab = b - a;

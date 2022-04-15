@@ -143,14 +143,14 @@ namespace CoralGeometry
 
                         var key = pmesh.Halfedges.EndVertex(hfe[0]);
                         var pp = pmesh.Vertices[key].ToVector3D();
-                        var Mid_Point = new Vector3D((pp + pmesh.Vertices[i].ToVector3D()).X / 2.0f,
+                        var Mid_Point = new Vector((pp + pmesh.Vertices[i].ToVector3D()).X / 2.0f,
                           (pp + pmesh.Vertices[i].ToVector3D()).Y / 2.0f, (pp + pmesh.Vertices[i].ToVector3D()).Z / 2.0f);
                         int id = dual.Vertices.Add(Mid_Point.X, Mid_Point.Y, Mid_Point.Z);
                         ids[1] = id;
 
                         var key2 = pmesh.Halfedges.EndVertex(hfe[hfe.Length - 1]);
                         var pp2 = pmesh.Vertices[key2].ToVector3D();
-                        var Mid_Point2 = new Vector3D((pp2 + pmesh.Vertices[i].ToVector3D()).X / 2.0f,
+                        var Mid_Point2 = new Vector((pp2 + pmesh.Vertices[i].ToVector3D()).X / 2.0f,
                           (pp2 + pmesh.Vertices[i].ToVector3D()).Y / 2.0f, (pp2 + pmesh.Vertices[i].ToVector3D()).Z / 2.0f);
                         int id2 = dual.Vertices.Add(Mid_Point2.X, Mid_Point2.Y, Mid_Point2.Z);
                         ids[adjF.Length + 2] = id2;

@@ -11,9 +11,9 @@ namespace CoralGeometry
         /// </summary>
         /// <param name="pmesh">Input a plankton mesh.</param>
         /// <returns>The uniform laplace position of each vertex.</returns>
-        public static Vector3D[] UniformLaplace(PlanktonMesh pmesh)
+        public static Vector[] UniformLaplace(PlanktonMesh pmesh)
         {
-            Vector3D[] laplace = new Vector3D[pmesh.Vertices.Count];
+            Vector[] laplace = new Vector[pmesh.Vertices.Count];
             for (int i = 0; i < pmesh.Halfedges.Count; i++)
             {
                 if (!(pmesh.Halfedges[i].AdjacentFace == -1))
@@ -35,13 +35,13 @@ namespace CoralGeometry
         /// </summary>
         /// <param name="pmesh">Input a plankton mesh.</param>
         /// <returns>The cotangent laplace positions of each vertex.</returns>
-        public static Vector3D[] CotangentLaplace(PlanktonMesh pmesh)
+        public static Vector[] CotangentLaplace(PlanktonMesh pmesh)
         {
-            var laplace = new Vector3D[pmesh.Vertices.Count];
+            var laplace = new Vector[pmesh.Vertices.Count];
             var ew = CotLaplaceEdgeWeight(pmesh);
             for (int i = 0; i < pmesh.Vertices.Count; i++)
             {
-                laplace[i] = Vector3D.Origin;
+                laplace[i] = Vector.Origin(3);
                 if (!pmesh.Vertices.IsBoundary(i))
                 {
                     double w = 0;

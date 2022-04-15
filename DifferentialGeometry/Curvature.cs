@@ -16,7 +16,7 @@ namespace CoralGeometry
         public static double[] LaplacianMeanCurvature(PlanktonMesh pmesh)
         {
             double[] curvature = new double[pmesh.Vertices.Count];
-            Vector3D[] cotL = LaplaceOperator.CotangentLaplace(pmesh);
+            Vector[] cotL = LaplaceOperator.CotangentLaplace(pmesh);
             for (int i = 0; i < cotL.Length; i++)
             {
                 curvature[i] = pmesh.Vertices.IsBoundary(i) ? 0.0f : cotL[i].Length / 2.0f;
@@ -74,17 +74,17 @@ namespace CoralGeometry
             Parallel.For(0, pmesh.Vertices.Count, i =>
             {
                 int[] neighbours = pmesh.Vertices.GetVertexNeighbours(i);
-                Vector3D pi = pmesh.Vertices[i].ToVector3D();
+                Vector pi = pmesh.Vertices[i].ToVector3D();
                 int valance = pmesh.Vertices.GetValence(i);
                 double sum = 0.0f;
                 double area = MixedVoronoiArea(pmesh, i);
                 for (int j = 0; j < valance; j++)
                 {
-                    Vector3D pj = pmesh.Vertices[neighbours[j]].ToVector3D();
-                    Vector3D pjNext = pmesh.Vertices[neighbours[(j + 1) % valance]].ToVector3D();
+                    Vector pj = pmesh.Vertices[neighbours[j]].ToVector3D();
+                    Vector pjNext = pmesh.Vertices[neighbours[(j + 1) % valance]].ToVector3D();
 
-                    Vector3D v1 = pi - pj;
-                    Vector3D v2 = pi - pjNext;
+                    Vector v1 = pi - pj;
+                    Vector v2 = pi - pjNext;
 
                     double cos = v1*v2 / v1.Length / v2.Length;
 
@@ -129,9 +129,9 @@ namespace CoralGeometry
         /// <param name="pmesh"> Input a plankton mesh.</param>
         /// <param name="maxCurvatures"> The maximum curvature of each vertex.</param>
         /// <returns></returns>
-        public static Vector3D[] FindMaxDirections(PlanktonMesh pmesh, double[] maxCurvatures)
+        public static Vector[] FindMaxDirections(PlanktonMesh pmesh, double[] maxCurvatures)
         {
-            Vector3D[] maxDirections = new Vector3D[maxCurvatures.Length];
+            Vector[] maxDirections = new Vector[maxCurvatures.Length];
             for (int i = 0; i < pmesh.Vertices.Count; i++)
             {
                 var hes = pmesh.Vertices.GetIncomingHalfedges(i);
