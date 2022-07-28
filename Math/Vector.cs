@@ -332,6 +332,11 @@ namespace CoralGeometry
             return true;
         }
 
+        public override int GetHashCode()
+        {
+            return _data.GetHashCode();
+        }
+
         /// <summary>
         /// Return a sub-vector with end-begin elements. The indices of elements is from begin to end-1.
         /// </summary>
